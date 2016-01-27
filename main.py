@@ -38,6 +38,7 @@ def main():
     datawritefile = {}
     unwrittenvehicles = {}
     
+    #extra thread that runs, checking if input has been made to the console. If so, it sets a variable to be True, indicating that the main loop should cleanup.
     thread1 = windowThread(1, "Thread-1", 1)
     thread1.start()
     
@@ -60,9 +61,10 @@ def main():
                             append_data = {"lon":child.attrib["lon"], "lat":child.attrib["lat"], "posix":requestime}
                             unwrittenvehicles[child.attrib["id"]].append(append_data)
                     except:
-                        pass
+                        pass #bad programmatic practice, I know.
             print(unwrittenvehicles)
-            
+        
+        #every so often, write the data that's been collected to file.    
         if event_count % 100 == 0:
             print("Flushing to file...")
                     
@@ -76,7 +78,8 @@ def main():
                 while len(elem) > 1: #don't write the last item, save it for reference.
                     item = elem.pop(0)
                     datawritefile[id].write(item["posix"] + "," + item["lon"] + "," + item["lat"] + "\n")
-            
+        
+        #check if the flag has been made, clean up by closing all open file handles.
         if (thread1.sigterm):
             print("Terminating")
             for activefile in datawritefile:
