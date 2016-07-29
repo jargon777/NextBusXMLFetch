@@ -1,4 +1,5 @@
-#fetch XML of stops and convert to EXCEL.
+# fetch XML of stops and convert to EXCEL.
+# It is designed to work with NextBus's AVL data feed, and has been tested for the TTC.
 
 import os
 import time
